@@ -24,23 +24,35 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api", (req, res) => {
+  let time = new Date().getTime();
+  let date = new Date(parseInt(time));
+  res.json({
+    "unix": parseInt(time),
+    "utc": date.toGMTString()
+  })
+});
+
 app.get("/api/:time", (req, res) => {
-  console.log(req.params.time);
-  if (parseInt(req.params.time) <= 3000) {
-    let date = new Date(req.params.time);
+  let time = req.params.time;
+  if (new Date(time) == "Invalid Date" && new Date(parseInt(time)) == "Invalid Date") {
+    res.json({ error: "Invalid Date" });
+  }
+  if (parseInt(time) <= 3000) {
+    let date = new Date(time);
     res.json({
       "unix": date.getTime(),
       "utc": date.toGMTString()
     });
   }
   else {
-    let date = new Date(parseInt(req.params.time));
+    let date = new Date(parseInt(time));
     res.json({
-      "unix": parseInt(req.params.time),
+      "unix": parseInt(time),
       "utc": date.toGMTString()
     });
   }
-})
+});
 
 
 
